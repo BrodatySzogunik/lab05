@@ -62,19 +62,11 @@ public class River {
                 preferencesMap.put(item,preferencesMap.get(item)+1);
             }
         }
-
     }
 
-    synchronized public void decrementPreferences(int dishId){
-        if(preferencesMap.get(dishId)==1){
-            preferencesMap.put(dishId,0);
-        }else{
-            preferencesMap.put(dishId,preferencesMap.get(dishId)-1);
-        }
 
-    }
 
-    synchronized public int getDishIdWithHighestPriority(){
+    synchronized public int getDishWithHighestPriorityToPrepare(){
         int max = -1;
         int maxId = 0 ;
         for(Map.Entry<Integer,Integer> entry: preferencesMap.entrySet() ){
@@ -83,7 +75,15 @@ public class River {
                 maxId = entry.getKey();
             }
         }
-        return maxId;
+        if(maxId != 0 && max>0) {
+            if(preferencesMap.get(maxId)==1){
+                preferencesMap.put(maxId,0);
+            }else{
+                preferencesMap.put(maxId,preferencesMap.get(maxId)-1);
+            }
+            return maxId;
+        }
+        return 0;
     }
 
     synchronized public void moveBoats(){

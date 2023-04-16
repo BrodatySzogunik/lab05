@@ -64,7 +64,7 @@ public class CustomerLabel extends JButton implements ActionListener {
             SetPreferencesFrame frame = new SetPreferencesFrame(guestPosition);
             frame.setVisible(true);
 
-            guest = new Guest(this.guestPosition);
+            guest = new Guest(this.guestPosition, this);
 
             thread = new Thread (guest);
             thread.start();

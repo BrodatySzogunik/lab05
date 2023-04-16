@@ -22,13 +22,8 @@ public class Cook implements Runnable{
         int dishId;
         while(true){
 
-            dishId = River.getInstance().getDishIdWithHighestPriority();
-
+            dishId = River.getInstance().getDishWithHighestPriorityToPrepare();
             if(dishId != 0){
-
-
-
-            River.getInstance().decrementPreferences(dishId);
             sleep((int)(Math.random()*1000));
             System.out.println("Cooker: "+cookPosition+" prepared dish: "+dishId);
 
