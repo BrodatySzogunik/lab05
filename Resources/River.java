@@ -1,18 +1,23 @@
 package Resources;
 
 
+import Threads.IngredientsMaker;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class River {
     private static River instance;
-    private Map<Integer,Boat> boatMap ;
+    private Map<Integer,Boat> boatMap;
+    private Map<Integer, IngredientsMaker> riceMakerMap;
     private Map<Integer,Integer> preferencesMap = new HashMap<>();
 
 
     private River(){
         this.boatMap = new HashMap<>();
+        this.riceMakerMap = new HashMap<>();
         fillRiverWthBoats();
+        createRiceMakers();
     }
 
      synchronized public static River getInstance(){
@@ -27,9 +32,25 @@ public class River {
             this.boatMap.put(i,new Boat(0));
         }
     }
+    private void createRiceMakers(){
+        this.riceMakerMap.put(1, new IngredientsMaker("Rice", 1));
+        this.riceMakerMap.put(2, new IngredientsMaker("Rice", 2));
+    }
 
     public Map<Integer, Boat> getBoatMap() {
         return boatMap;
+    }
+
+    public Map<Integer, IngredientsMaker> getRiceMakerMap() {return riceMakerMap;}
+
+    synchronized public void standInRiceQueue(Integer cookId,int riceNeeded){
+        IngredientsMaker smallestQueue = getRiceMakerMap().get(1);
+        if(getRiceMakerMap().get(1).getQueueLength() > getRiceMakerMap().get(2).getQueueLength()){
+            smallestQueue = getRiceMakerMap().get(2);
+        }
+        for(int i=0;i<riceNeeded;i++){
+            smallestQueue.standInQueue(cookId);
+        }
     }
 
     synchronized public int getDishFromBoat(int position) {
@@ -39,7 +60,6 @@ public class River {
         }
         return dishId;
     }
-
 
     synchronized public boolean putDishOnBoat(int dishId,int position) {
         if(getBoatMap().get(position).getDishId()==0){
