@@ -18,24 +18,13 @@ public class Cook implements Runnable{
     }
 
     @Override
-    public void run(){
+    public void run() {
         int dishId;
-        int riceNeeded = 1;
-        int riceCollected = 0;
         while(true){
 
             dishId = River.getInstance().getDishWithHighestPriorityToPrepare();
             if(dishId != 0){
             sleep((int)(Math.random()*1000));
-
-
-            String dishIdString = Integer.toString(dishId);
-            if(dishIdString.length() != 1){
-                riceNeeded += Integer.parseInt(dishIdString.substring(0, 1));
-            }
-
-            River.getInstance().standInRiceQueue(cookPosition, riceNeeded);
-            riceNeeded = 0;
 
             System.out.println("Cooker: "+cookPosition+" prepared dish: "+dishId);
 
